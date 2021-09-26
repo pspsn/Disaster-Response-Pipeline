@@ -104,7 +104,7 @@ def build_model(X_train,Y_train):
 #      'clf__estimator__max_features': ['log2', 'auto', 'sqrt', None],
 #     'clf__estimator__criterion': ['gini', 'entropy'],
 #    'clf__estimator__max_depth': [None, 25, 50, 100, 150, 200],
-     'clf__estimator__n_estimators': [10, 20, 40, 50]        
+     'clf__estimator__n_estimators': [10,20]        
     }
     
     cv = GridSearchCV(estimator=pipeline, param_grid=parameters)
@@ -130,11 +130,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
     print('Average overall accuracy {0:.2f}% \n'.format(overall_accuracy*100))
     print('F1 score (custom definition) {0:.2f}%\n'.format(multi_f1*100))
-    
-    for i in range(36):
-        print(Y_test.columns[i], ':')
-        print(classification_report(Y_test.iloc[:,i], Y_pred_test[:,i], target_names=category_names), '...................................................')
-    
+    print(classification_report(Y_test, pd.DataFrame(Y_pred_test, columns=Y_test.columns), target_names=Y_test.columns))
 
 def save_model(model, model_filepath):
     
@@ -166,9 +162,7 @@ def main():
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
 
-        print('Saving model...\n    MODEL: {}'.format(
-        
-        ))
+        print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
         print('Trained model saved!')

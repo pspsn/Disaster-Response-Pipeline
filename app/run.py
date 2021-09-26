@@ -3,6 +3,7 @@ import plotly
 import pandas as pd
 import sys
 
+import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
@@ -12,6 +13,7 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
+nltk.download('wordnet')
 
 app = Flask(__name__)
 
@@ -51,31 +53,72 @@ def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
+
+    
+    genre_count = df.groupby('genre').count()['message']
+    genre_per = round(100*genre_count/genre_count.sum(), 2)
+    genre = list(genre_count.index)
+    category_num = df.drop(['id', 'message', 'original', 'genre'], axis = 1).sum()
+    category_num = category_num.sort_values(ascending = False)
+    category = list(category_num.index)
+
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
+            "data": [
+              {
+                "type": "pie",
+                "uid": "f4de1f",
+                "hole": 0.4,
+                "name": "Genre",
+                "pull": 0,
+                "domain": {
+                  "x": genre_per,
+                  "y": genre
                 },
-                'xaxis': {
-                    'title': "Genre"
-                }
+                "marker": {
+                  "colors": [
+                    "#1EB23B",
+                    "#8067EB",
+                    "#F28135"
+                   ]
+                },
+                "textinfo": "label+value",
+                "hoverinfo": "all",
+                "labels": genre,
+                "values": genre_count
+              }
+            ],
+            "layout": {
+              "title": "Count and Percent of Messages by Genre"
             }
+        },
+        {
+            "data": [
+              {
+                "type": "bar",
+                "x": category,
+                "y": category_num,
+                "marker": {
+                  "color": 'grey'}
+                }
+            ],
+            "layout": {
+              "title": "Count of Messages by Category",
+              'yaxis': {
+                  'title': "Count"
+              },
+              'xaxis': {
+                  'title': "Genre"
+              },
+              'barmode': 'group'
+            } 
         }
     ]
+
+
+
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
@@ -104,7 +147,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='127.0.0.1', port=3001, debug=True)
 
 
 if __name__ == '__main__':
