@@ -40,6 +40,8 @@ def clean_data(df):
         # convert column from string to numeric
         categories[column] = categories[column].astype(int)
         
+    categories[categories > 1] = 1
+    print(categories['related'].value_counts())
     df.drop(['categories'], axis=1, inplace=True)
     df = pd.concat([df,categories], join='inner', axis=1)    
     df.drop_duplicates(inplace=True)    
@@ -58,7 +60,7 @@ def save_data(df, database_filename):
     '''
     
     engine = create_engine('sqlite:///data//DisasterResponse.db')
-    df.to_sql('DisasterResponse', engine, index=False)
+    df.to_sql('DisasterResponse', engine, index=False,if_exists='replace')
 
 
 def main():

@@ -104,7 +104,7 @@ def build_model(X_train,Y_train):
 #      'clf__estimator__max_features': ['log2', 'auto', 'sqrt', None],
 #     'clf__estimator__criterion': ['gini', 'entropy'],
 #    'clf__estimator__max_depth': [None, 25, 50, 100, 150, 200],
-     'clf__estimator__n_estimators': [10,20]        
+     'clf__estimator__n_estimators': [10,20,30]        
     }
     
     cv = GridSearchCV(estimator=pipeline, param_grid=parameters)
