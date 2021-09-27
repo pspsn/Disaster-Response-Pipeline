@@ -72,5 +72,5 @@ Screenshot 1: App analysis of the data base
 Screenshot 2: App word search Page
 ![Screenshot 2](img/Query.PNG)
 
-### Acknowledgements <a name="acknowledges"></a>
+### Acknowledgements <a name="acknowledgements"></a>
 I would like to thank [Udacity](https://eu.udacity.com/) for this amazing project, and [Figure Eight](https://www.figure-eight.com/) for providing the relevant dataset to train the model.
