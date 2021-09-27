@@ -50,13 +50,6 @@ All libraries are available in Anaconda distribution of Python. The used librari
 
 *The code should run using Python versions 3.*.
 
-process_data.py: This python excutuble code takes as its input csv files containing message data and message categories (labels), and then creates a SQL database
-train_classifier.py: This code trains the ML model with the SQL data base
-ETL Pipeline Preparation.ipynb: process_data.py development procces
-ML Pipeline Preparation.ipynb: train_classifier.py. development procces
-data: This folder contains sample messages and categories datasets in csv format.
-app: cointains the run.py to iniate the web app.
-
 ### Instructions <a name="instructions"></a>
 1. Run the following commands in the project's root directory to set up your database and model.
 
